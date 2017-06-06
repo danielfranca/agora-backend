@@ -28,28 +28,47 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
+REST_USE_JWT = True
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
     'rest_framework',
-    'rest_framework.authtoken',  # only if you use token authentication
-    'social_django',  # django social auth
-    'rest_social_auth',  # this package
+    'rest_framework_drilldown',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.twitter',
+    'corsheaders',
+
+    # My Apps
+    'accounts',
 ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = 'your app client id'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'your app client secret'
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]  # optional
+# SOCIAL_AUTH_FACEBOOK_KEY = '992544874169577'
+# SOCIAL_AUTH_FACEBOOK_SECRET = '30bab9842cdfbab0311c58d78acca322'
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]  # optional
+
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+SOCIALACCOUNT_QUERY_EMAIL = True
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -59,8 +78,6 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
@@ -72,7 +89,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8080',
+    'localhost:8000',
+)
 
 ROOT_URLCONF = 'agora.urls'
 
